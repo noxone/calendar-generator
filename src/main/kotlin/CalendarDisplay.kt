@@ -1,6 +1,10 @@
-import calendar.CalendarHelper
+import calendar.DateHelper
+import csstype.px
+import csstype.rgb
+import i18n.translate
 import react.FC
 import react.Props
+import react.css.css
 import react.dom.html.ReactHTML.h2
 import react.dom.html.ReactHTML.table
 import react.dom.html.ReactHTML.tbody
@@ -17,8 +21,8 @@ private class DisplayMonth(
     val index: Int,
     val year: Int
 ) {
-    val name: String = CalendarHelper.getMonthName(index)
-    val numberOfDays = CalendarHelper.daysInMonth(index, year)
+    val name: String = DateHelper.getMonthName(index)
+    val numberOfDays = DateHelper.daysInMonth(year, index)
 }
 
 val CalendarDisplay = FC<CalendarDisplayProps> { props ->
@@ -38,7 +42,7 @@ val CalendarDisplay = FC<CalendarDisplayProps> { props ->
             tr {
                 th {
                     colSpan = props.calendarConfig.numItems
-                    +"${props.calendarConfig.title}:${props.calendarConfig.numItems}"
+                    +props.calendarConfig.title.translate()
                 }
             }
         }
@@ -47,7 +51,7 @@ val CalendarDisplay = FC<CalendarDisplayProps> { props ->
             tr {
                 for (month in months) {
                     td {
-                        +"${month.name}'${month.year.toString().substring(2)}"
+                        +month.name.translate()
                     }
                 }
             }
@@ -56,6 +60,10 @@ val CalendarDisplay = FC<CalendarDisplayProps> { props ->
                     for (month in months) {
                         val dayIsValid = month.numberOfDays >= dayInMonth
                         td {
+                            css {
+                                borderWidth = 1.px
+                                borderColor = rgb(0,0,0)
+                            }
                             if (dayIsValid) {
                                 +dayInMonth.toString()
                             }

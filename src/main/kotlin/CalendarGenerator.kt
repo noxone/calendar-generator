@@ -10,8 +10,6 @@ import react.useState
 }*/
 
 val CalendarGenerator = FC<Props> {
-    //var calTitle by useState("abc def")
-    //var calItems by useState(2)
     var calendarConfig by useState(CalendarConfig())
 
     h1 {

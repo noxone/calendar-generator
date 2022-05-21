@@ -1,5 +1,6 @@
 package components
 
+import i18n.translate
 import react.FC
 import react.Props
 import react.dom.aria.ariaDescribedBy
@@ -30,7 +31,7 @@ val IntDropDownInput = FC<IntDropDownInputProps> { props ->
         for (item in props.items) {
             option {
                 value = item.toString()
-                +props.toString(item)
+                +props.toString(item).translate()
             }
         }
     }

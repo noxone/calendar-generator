@@ -1,4 +1,4 @@
-import calendar.CalendarHelper
+import calendar.DateHelper
 import components.IntDropDownInput
 import components.NumberInput
 import components.RangeInput
@@ -39,9 +39,9 @@ val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
     }
     IntDropDownInput {
         title = "First month"
-        items = CalendarHelper.allMonthIndices
+        items = DateHelper.allMonthIndices
         value = props.calendarConfig.startMonth
         onValueChanged = { props.onStartMonthChange(it) }
-        toString = { CalendarHelper.getMonthName(it) }
+        toString = { DateHelper.getMonthName(it) }
     }
 }

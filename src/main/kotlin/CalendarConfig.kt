@@ -1,9 +1,9 @@
-import calendar.CalendarHelper
+import calendar.DateHelper
 import react.State
 
 data class CalendarConfig(
     var title: String = "Calendar",
-    var year: Int = 2022,
-    var numItems: Int = 12,
-    var startMonth: Int = CalendarHelper.currentMonth
+    var year: Int = DateHelper.currentYear,
+    var numItems: Int = DateHelper.allMonths.size,
+    var startMonth: Int = DateHelper.currentMonth
 ) : State
