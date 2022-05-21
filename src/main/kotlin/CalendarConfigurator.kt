@@ -1,20 +1,16 @@
+import calendar.CalendarHelper
+import components.IntDropDownInput
 import components.RangeInput
 import components.TextInput
 import react.FC
 import react.Props
-import react.dom.aria.ariaDescribedBy
-import react.dom.html.InputType
-import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h2
-import react.dom.html.ReactHTML.hr
-import react.dom.html.ReactHTML.input
-import react.dom.html.ReactHTML.label
-import react.dom.html.ReactHTML.span
 
 external interface CalendarConfigurationProps : Props {
     var calendarConfig: CalendarConfig
     var onTitleChanged: (String) -> Unit
     var onNumItemsChange: (Int) -> Unit
+    var onStartMonthChange: (Int) -> Unit
 }
 
 val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
@@ -33,5 +29,12 @@ val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
         min = 1
         max = 24
         onValueChanged = { props.onNumItemsChange(it) }
+    }
+    IntDropDownInput {
+        title = "First month"
+        items = CalendarHelper.allMonthIndices
+        value = props.calendarConfig.startMonth
+        onValueChanged = { props.onStartMonthChange(it) }
+        toString = { CalendarHelper.getMonthName(it) }
     }
 }
