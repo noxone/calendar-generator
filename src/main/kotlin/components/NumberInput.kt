@@ -11,15 +11,15 @@ import react.dom.html.ReactHTML.input
 import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.span
 
-external interface TextInputProps : Props {
+external interface NumberInputProps : Props {
     var title: String
     var placeholder: String?
-    var value: String
-    var onValueChanged: (String) -> Unit
+    var value: Int
+    var onValueChanged: (Int) -> Unit
 }
 
 
-val TextInput = FC<TextInputProps> { props ->
+val NumberInput = FC<NumberInputProps> { props ->
     val idx = IdCounter.nextId()
 
     div {
@@ -31,14 +31,14 @@ val TextInput = FC<TextInputProps> { props ->
         }
         input {
             className = "form-control"
-            type = InputType.text
+            type = InputType.number
             props.placeholder?.let { placeholder = it }
             ariaDescribedBy = idx
-            value = props.value
+            value = props.value.toString()
             min = 1.0
             max = 24.0
             onChange = {
-                props.onValueChanged(it.target.value)
+                props.onValueChanged(it.target.value.toInt())
             }
         }
     }
