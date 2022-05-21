@@ -35,8 +35,6 @@ val TextInput = FC<TextInputProps> { props ->
             props.placeholder?.let { placeholder = it }
             ariaDescribedBy = idx
             value = props.value
-            min = 1.0
-            max = 24.0
             onChange = {
                 props.onValueChanged(it.target.value)
             }

@@ -1,5 +1,6 @@
 import calendar.CalendarHelper
 import components.IntDropDownInput
+import components.NumberInput
 import components.RangeInput
 import components.TextInput
 import react.FC
@@ -11,6 +12,7 @@ external interface CalendarConfigurationProps : Props {
     var onTitleChanged: (String) -> Unit
     var onNumItemsChange: (Int) -> Unit
     var onStartMonthChange: (Int) -> Unit
+    var onYearChanged: (Int) -> Unit
 }
 
 val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
@@ -29,6 +31,11 @@ val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
         min = 1
         max = 24
         onValueChanged = { props.onNumItemsChange(it) }
+    }
+    NumberInput {
+        title = "Year"
+        value = props.calendarConfig.year
+        onValueChanged = { props.onYearChanged(it) }
     }
     IntDropDownInput {
         title = "First month"

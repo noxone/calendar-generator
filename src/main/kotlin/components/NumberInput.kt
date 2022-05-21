@@ -35,8 +35,6 @@ val NumberInput = FC<NumberInputProps> { props ->
             props.placeholder?.let { placeholder = it }
             ariaDescribedBy = idx
             value = props.value.toString()
-            min = 1.0
-            max = 24.0
             onChange = {
                 props.onValueChanged(it.target.value.toInt())
             }

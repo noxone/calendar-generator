@@ -26,6 +26,7 @@ val CalendarGenerator = FC<Props> {
                 onTitleChanged = { calendarConfig = calendarConfig.copy(title = it) }
                 onNumItemsChange = { calendarConfig = calendarConfig.copy(numItems = it) }
                 onStartMonthChange = { calendarConfig = calendarConfig.copy(startMonth = it) }
+                onYearChanged = { calendarConfig = calendarConfig.copy(year = it)}
             }
         }
         div {
