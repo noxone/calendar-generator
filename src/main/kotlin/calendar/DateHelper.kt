@@ -37,3 +37,6 @@ object DateHelper {
 
     private fun Month.readableName() = this.name.lowercase().replaceFirstChar { it.uppercase() }
 }
+
+val LocalDate.weekOfYear: Int
+    get() = 0 // TODO: Implement week of year!
