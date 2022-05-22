@@ -1,9 +1,11 @@
 import calendar.CalendarSpecification
 import calendar.DateHelper
-import components.IntDropDownInput
+import calendar.Holiday
+import components.DropDownInput
 import components.NumberInput
 import components.RangeInput
 import components.TextInput
+import kotlinx.datetime.Month
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.h2
@@ -12,8 +14,9 @@ external interface CalendarConfigurationProps : Props {
     var calendarSpecs: CalendarSpecification
     var onTitleChanged: (String) -> Unit
     var onNumItemsChange: (Int) -> Unit
-    var onStartMonthChange: (Int) -> Unit
+    var onStartMonthChange: (Month) -> Unit
     var onYearChanged: (Int) -> Unit
+    var onHolidayLanguageChanged: (String) -> Unit
 }
 
 val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
@@ -38,11 +41,18 @@ val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
         value = props.calendarSpecs.startDate.year
         onValueChanged = { props.onYearChanged(it) }
     }
-    IntDropDownInput {
+    DropDownInput {
         title = "First month"
-        items = DateHelper.allMonthIndices
-        value = props.calendarSpecs.startDate.monthNumber
-        onValueChanged = { props.onStartMonthChange(it) }
-        toString = { DateHelper.getMonthName(it) }
+        items = DateHelper.allMonths
+        value = props.calendarSpecs.startDate.month
+        onValueChanged = { props.onStartMonthChange(it as Month) }
+        toString = { (it as Month).name }
+    }
+    DropDownInput {
+        title = "Holidays"
+        items = Holiday.countries.entries.toList()
+        value = Holiday.countries.entries.firstOrNull { it.key == props.calendarSpecs.holidayLanguage }
+        onValueChanged = { props.onHolidayLanguageChanged((it as Map.Entry<String, String>).key) }
+        toString = { (it as Map.Entry<String, String>).value }
     }
 }

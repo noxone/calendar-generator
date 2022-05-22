@@ -1,15 +1,11 @@
 import calendar.CalendarSpecification
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.useState
-
-/*external interface GeneratorProps : Props {
-    var title: String
-    var onCalendarTitleChanged: (String) -> Unit
-}*/
 
 val CalendarGenerator = FC<Props> {
     var calendarSpecs by useState(CalendarSpecification())
@@ -28,7 +24,7 @@ val CalendarGenerator = FC<Props> {
                 onStartMonthChange = {
                     calendarSpecs = calendarSpecs.copy(startDate = LocalDate(
                         year = calendarSpecs.startDate.year,
-                        monthNumber = it,
+                        monthNumber = it.number,
                         dayOfMonth = calendarSpecs.startDate.dayOfMonth))
                 }
                 onYearChanged = {
@@ -36,6 +32,10 @@ val CalendarGenerator = FC<Props> {
                         year = it,
                         monthNumber = calendarSpecs.startDate.monthNumber,
                         dayOfMonth = calendarSpecs.startDate.dayOfMonth))
+                }
+                onHolidayLanguageChanged = {
+                    console.log(it)
+                    calendarSpecs = calendarSpecs.copy(holidayLanguage = it)
                 }
             }
         }

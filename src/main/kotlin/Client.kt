@@ -1,7 +1,6 @@
 import calendar.Holiday
 import kotlinx.browser.document
 import kotlinx.datetime.Clock
-import kotlinx.datetime.toLocalDateTime
 import react.create
 import react.dom.render
 
@@ -10,9 +9,9 @@ fun main() {
     root.className = "container-fluid"
     document.body!!.appendChild(root)
 
-    console.info(Clock.System.now().toString())
-    //console.log(Holiday.getCountries().keys.joinToString(separator = ", "))
-    Holiday.getCountries().entries.forEach { console.log(it.key, it.value) }
+    console.info("Current time:", Clock.System.now().toString())
+    console.info("Preferred language:", preferredLanguage)
+    console.info("Available holiday regions: ", Holiday.countryCodes.joinToString(separator = ", "))
 
     render(CalendarGenerator.create {
         /*title = calendarConfig.title
