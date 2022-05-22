@@ -35,13 +35,13 @@ val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
     }
     NumberInput {
         title = "Year"
-        value = props.calendarSpecs.year
+        value = props.calendarSpecs.startDate.year
         onValueChanged = { props.onYearChanged(it) }
     }
     IntDropDownInput {
         title = "First month"
         items = DateHelper.allMonthIndices
-        value = props.calendarSpecs.startMonth
+        value = props.calendarSpecs.startDate.monthNumber
         onValueChanged = { props.onStartMonthChange(it) }
         toString = { DateHelper.getMonthName(it) }
     }

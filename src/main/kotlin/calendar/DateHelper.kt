@@ -5,10 +5,12 @@ import kotlinx.datetime.*
 object DateHelper {
     val clock = Clock.System.now()
 
+    val currentDate: LocalDate
+        get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     val currentMonth: Int
-        get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).month.number
+        get() = currentDate.monthNumber
     val currentYear: Int
-        get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
+        get() = currentDate.year
 
     fun getMonthName(number: Int): String
         = Month(number).readableName()

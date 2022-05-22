@@ -30,12 +30,12 @@ val CalendarDisplay = FC<CalendarDisplayProps> { props ->
     fun Int.toMonth(): Int = (this - 1) % 12 + 1
 
     val config = props.calendarSpecs
-    val months = (config.startMonth .. (config.startMonth + config.numItems))
+    val months = (config.startDate.monthNumber .. (config.startDate.monthNumber + config.numItems))
         .toList()
-        .map { DisplayMonth(index = it.toMonth(), year = config.year + it / 12) }
+        .map { DisplayMonth(index = it.toMonth(), year = config.startDate.year + it / 12) }
 
     h2 {
-        +"Calendar starting ${props.calendarSpecs.year}"
+        +"Calendar starting ${props.calendarSpecs.startDate.year}"
     }
 
     table {

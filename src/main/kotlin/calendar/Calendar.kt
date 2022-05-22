@@ -1,15 +1,19 @@
 package calendar
 
-class Calendar private constructor() {
+class Calendar private constructor(
+    val months: List<CalendarMonth>
+) {
     companion object {
         fun createCalendar(specs: CalendarSpecification): Calendar {
-            return Calendar()
+            1..specs.numItems
+
+            return Calendar(emptyList())
         }
     }
 
-    val months: List<CalendarMonth> = emptyList()
+    class CalendarMonth private constructor(
 
-    class CalendarMonth private constructor() {
+    ) {
 
     }
 }

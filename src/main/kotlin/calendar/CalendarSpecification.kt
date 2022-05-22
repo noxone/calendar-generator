@@ -1,11 +1,15 @@
 package calendar
 
-import calendar.DateHelper
+import kotlinx.datetime.LocalDate
 import react.State
 
 data class CalendarSpecification(
     var title: String = "Calendar",
-    var year: Int = DateHelper.currentYear,
+    var baseType: CalendarBaseType = CalendarBaseType.MONTH,
     var numItems: Int = DateHelper.allMonths.size,
-    var startMonth: Int = DateHelper.currentMonth
+    var startDate: LocalDate = DateHelper.currentDate
 ) : State
+
+enum class CalendarBaseType {
+    YEAR, MONTH, WEEK
+}
