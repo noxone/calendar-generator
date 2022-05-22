@@ -1,5 +1,5 @@
+import calendar.Calendar
 import calendar.CalendarSpecification
-import calendar.DateHelper
 import csstype.px
 import csstype.rgb
 import i18n.translate
@@ -18,21 +18,8 @@ external interface CalendarDisplayProps : Props {
     var calendarSpecs: CalendarSpecification
 }
 
-private class DisplayMonth(
-    val index: Int,
-    val year: Int
-) {
-    val name: String = DateHelper.getMonthName(index)
-    val numberOfDays = DateHelper.daysInMonth(year, index)
-}
-
 val CalendarDisplay = FC<CalendarDisplayProps> { props ->
-    fun Int.toMonth(): Int = (this - 1) % 12 + 1
-
-    val config = props.calendarSpecs
-    val months = (config.startDate.monthNumber .. (config.startDate.monthNumber + config.numItems))
-        .toList()
-        .map { DisplayMonth(index = it.toMonth(), year = config.startDate.year + it / 12) }
+    val calendar = Calendar.createCalendar(props.calendarSpecs)
 
     h2 {
         +"Calendar starting ${props.calendarSpecs.startDate.year}"
@@ -50,24 +37,31 @@ val CalendarDisplay = FC<CalendarDisplayProps> { props ->
 
         tbody {
             tr {
-                for (month in months) {
+                for (unit in calendar.units) {
                     td {
-                        +month.name.translate()
+                        +unit.name.translate()
                     }
                 }
             }
-            for (dayInMonth in 1..31) {
+            for (dayInMonth in 1..calendar.maxDaysInUnit) {
                 tr {
-                    for (month in months) {
-                        val dayIsValid = month.numberOfDays >= dayInMonth
-                        td {
-                            css {
-                                borderWidth = 1.px
-                                borderColor = rgb(0,0,0)
+                    for (unit in calendar.units) {
+                        val day = unit.get(dayInMonth)
+                        if (day != null) {
+                            td {
+                                css {
+                                    borderWidth = 1.px
+                                    borderColor = rgb(0,0,0)
+                                    if (day.publicHoliday) {
+                                        backgroundColor = rgb(200,200,200)
+                                    } else if (day.weekend) {
+                                        backgroundColor = rgb(220,220,220)
+                                    }
+                                }
+                                +day.display
                             }
-                            if (dayIsValid) {
-                                +dayInMonth.toString()
-                            }
+                        } else {
+                            td {}
                         }
                     }
                 }

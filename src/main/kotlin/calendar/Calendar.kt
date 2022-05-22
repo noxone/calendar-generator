@@ -1,12 +1,15 @@
 package calendar
 
+import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.number
 
 class Calendar private constructor(
-    val months: List<Unit>
+    val units: List<Unit>
 ) {
+    val maxDaysInUnit = units.maxOf { it.days.size }
+
     companion object {
         private const val MONTHS_PER_YEAR = 12
         private const val WEEKS_PER_YEAR = 52
@@ -15,19 +18,33 @@ class Calendar private constructor(
         private fun Int.toMonth(): Int = toMod(MONTHS_PER_YEAR)
         private fun Int.toWeek(): Int = toMod(WEEKS_PER_YEAR)
 
-        fun createCalendar(specs: CalendarSpecification): Calendar
-            = when (specs.baseType) {
-                BaseType.MONTH -> createMonthlyCalendar(specs = specs)
-                else -> throw Exception("Not yet implemented")
+        fun createCalendar(specs: CalendarSpecification): Calendar {
+            try {
+                return when (specs.baseType) {
+                    BaseType.MONTH -> createMonthlyCalendar(specs = specs)
+                    else -> throw Exception("Not yet implemented")
+                }
+            } catch (e: Exception) {
+                console.error(e)
+                throw Exception("nö", e)
             }
+        }
 
         private fun createMonthlyCalendar(specs: CalendarSpecification): Calendar {
             val startYear = specs.startDate.year
             val startMonth = specs.startDate.monthNumber
 
-            val units = (1..specs.numItems).toList()
+            val units = (0 until specs.numItems).toList()
                 .map { startMonth + it }
-                .map { Unit(baseType = BaseType.MONTH, year = startYear + it / MONTHS_PER_YEAR, number = it.toMonth()) }
+                .map {
+                    val month = Month(it.toMonth())
+                    Unit(
+                        baseType = BaseType.MONTH,
+                        year = startYear + it / MONTHS_PER_YEAR,
+                        number = month.number,
+                        name = month.name
+                    )
+                }
 
             units.forEach { unit ->
                 val month = Month(unit.number)
@@ -55,15 +72,21 @@ class Calendar private constructor(
     class Unit internal constructor(
         val baseType: BaseType,
         val year: Int,
-        val number: Int
+        val number: Int,
+        val name: String
     ) {
         internal val mutableDays: MutableList<Day> = mutableListOf()
         val days: List<Day> get() = mutableDays
+
+        fun get(index: Int): Day? = days.getOrNull(index - 1)
     }
 
     class Day internal constructor(
         val date: LocalDate
     ) {
         val display: String get() = date.dayOfMonth.toString()
+        val dayOfWeek = date.dayOfWeek
+        val weekend: Boolean = dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY
+        val publicHoliday: Boolean = dayOfWeek == DayOfWeek.SUNDAY
     }
 }
