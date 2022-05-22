@@ -1,3 +1,4 @@
+import calendar.CalendarSpecification
 import calendar.DateHelper
 import csstype.px
 import csstype.rgb
@@ -14,7 +15,7 @@ import react.dom.html.ReactHTML.thead
 import react.dom.html.ReactHTML.tr
 
 external interface CalendarDisplayProps : Props {
-    var calendarConfig: CalendarConfig
+    var calendarSpecs: CalendarSpecification
 }
 
 private class DisplayMonth(
@@ -28,21 +29,21 @@ private class DisplayMonth(
 val CalendarDisplay = FC<CalendarDisplayProps> { props ->
     fun Int.toMonth(): Int = (this - 1) % 12 + 1
 
-    val config = props.calendarConfig
+    val config = props.calendarSpecs
     val months = (config.startMonth .. (config.startMonth + config.numItems))
         .toList()
         .map { DisplayMonth(index = it.toMonth(), year = config.year + it / 12) }
 
     h2 {
-        +"Calendar starting ${props.calendarConfig.year}"
+        +"Calendar starting ${props.calendarSpecs.year}"
     }
 
     table {
         thead {
             tr {
                 th {
-                    colSpan = props.calendarConfig.numItems
-                    +props.calendarConfig.title.translate()
+                    colSpan = props.calendarSpecs.numItems
+                    +props.calendarSpecs.title.translate()
                 }
             }
         }

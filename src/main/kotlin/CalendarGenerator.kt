@@ -1,3 +1,4 @@
+import calendar.CalendarSpecification
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
@@ -10,7 +11,7 @@ import react.useState
 }*/
 
 val CalendarGenerator = FC<Props> {
-    var calendarConfig by useState(CalendarConfig())
+    var calendarSpecs by useState(CalendarSpecification())
 
     h1 {
         +"Calender Generator"
@@ -20,17 +21,17 @@ val CalendarGenerator = FC<Props> {
         div {
             className = "col-3"
             CalendarConfiguration {
-                this.calendarConfig = calendarConfig
-                onTitleChanged = { calendarConfig = calendarConfig.copy(title = it) }
-                onNumItemsChange = { calendarConfig = calendarConfig.copy(numItems = it) }
-                onStartMonthChange = { calendarConfig = calendarConfig.copy(startMonth = it) }
-                onYearChanged = { calendarConfig = calendarConfig.copy(year = it)}
+                this.calendarSpecs = calendarSpecs
+                onTitleChanged = { calendarSpecs = calendarSpecs.copy(title = it) }
+                onNumItemsChange = { calendarSpecs = calendarSpecs.copy(numItems = it) }
+                onStartMonthChange = { calendarSpecs = calendarSpecs.copy(startMonth = it) }
+                onYearChanged = { calendarSpecs = calendarSpecs.copy(year = it)}
             }
         }
         div {
             className = "col-9"
             CalendarDisplay {
-                this.calendarConfig = calendarConfig
+                this.calendarSpecs = calendarSpecs
             }
         }
     }

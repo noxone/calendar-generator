@@ -1,3 +1,4 @@
+import calendar.CalendarSpecification
 import calendar.DateHelper
 import components.IntDropDownInput
 import components.NumberInput
@@ -8,7 +9,7 @@ import react.Props
 import react.dom.html.ReactHTML.h2
 
 external interface CalendarConfigurationProps : Props {
-    var calendarConfig: CalendarConfig
+    var calendarSpecs: CalendarSpecification
     var onTitleChanged: (String) -> Unit
     var onNumItemsChange: (Int) -> Unit
     var onStartMonthChange: (Int) -> Unit
@@ -23,24 +24,24 @@ val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
     TextInput {
         title = "Title"
         onValueChanged = { props.onTitleChanged(it) }
-        value = props.calendarConfig.title
+        value = props.calendarSpecs.title
     }
     RangeInput {
         title = "Columns"
-        value = props.calendarConfig.numItems
+        value = props.calendarSpecs.numItems
         min = 1
         max = 24
         onValueChanged = { props.onNumItemsChange(it) }
     }
     NumberInput {
         title = "Year"
-        value = props.calendarConfig.year
+        value = props.calendarSpecs.year
         onValueChanged = { props.onYearChanged(it) }
     }
     IntDropDownInput {
         title = "First month"
         items = DateHelper.allMonthIndices
-        value = props.calendarConfig.startMonth
+        value = props.calendarSpecs.startMonth
         onValueChanged = { props.onStartMonthChange(it) }
         toString = { DateHelper.getMonthName(it) }
     }
