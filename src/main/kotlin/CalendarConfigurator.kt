@@ -1,6 +1,6 @@
 import calendar.CalendarSpecification
 import calendar.DateHelper
-import calendar.Holiday
+import calendar.HolidayManager
 import components.DropDownInput
 import components.NumberInput
 import components.RangeInput
@@ -50,8 +50,8 @@ val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
     }
     DropDownInput {
         title = "Holidays"
-        items = Holiday.countries.entries.toList()
-        value = Holiday.countries.entries.firstOrNull { it.key == props.calendarSpecs.holidayLanguage }
+        items = HolidayManager.countries.entries.toList()
+        value = HolidayManager.countries.entries.firstOrNull { it.key == props.calendarSpecs.holidayLanguage }
         onValueChanged = { props.onHolidayLanguageChanged((it as Map.Entry<String, String>).key) }
         toString = { (it as Map.Entry<String, String>).value }
     }

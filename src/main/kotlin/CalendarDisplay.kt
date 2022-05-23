@@ -1,12 +1,16 @@
 import calendar.Calendar
 import calendar.CalendarSpecification
+import calendar.weekOfYear
+import csstype.FontWeight
 import csstype.px
 import csstype.rgb
 import i18n.translate
+import kotlinx.datetime.DayOfWeek
 import react.FC
 import react.Props
 import react.css.css
 import react.dom.html.ReactHTML.h2
+import react.dom.html.ReactHTML.small
 import react.dom.html.ReactHTML.table
 import react.dom.html.ReactHTML.tbody
 import react.dom.html.ReactHTML.td
@@ -57,8 +61,21 @@ val CalendarDisplay = FC<CalendarDisplayProps> { props ->
                                     } else if (day.weekend) {
                                         backgroundColor = rgb(220,220,220)
                                     }
+                                    if (day.dayOfWeek == DayOfWeek.SUNDAY) {
+                                        fontWeight = FontWeight.bold
+                                    }
                                 }
                                 +day.display
+                                day.holidayName?.let {
+                                    small {
+                                        +it
+                                    }
+                                }
+                                if (day.dayOfWeek == DayOfWeek.MONDAY) {
+                                    small {
+                                        +day.date.weekOfYear.toString()
+                                    }
+                                }
                             }
                         } else {
                             td {}

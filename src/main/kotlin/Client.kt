@@ -1,4 +1,4 @@
-import calendar.Holiday
+import calendar.HolidayManager
 import kotlinx.browser.document
 import kotlinx.datetime.Clock
 import react.create
@@ -11,7 +11,8 @@ fun main() {
 
     console.info("Current time:", Clock.System.now().toString())
     console.info("Preferred language:", preferredLanguage)
-    console.info("Available holiday regions: ", Holiday.countryCodes.joinToString(separator = ", "))
+    console.info("Available holiday regions: ", HolidayManager.countryCodes.joinToString(separator = ", "))
+    console.info(HolidayManager.forCountry(preferredLanguage!!).getHolidays(2022))
 
     render(CalendarGenerator.create {
         /*title = calendarConfig.title

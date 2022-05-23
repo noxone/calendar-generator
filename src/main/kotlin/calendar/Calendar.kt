@@ -33,6 +33,7 @@ class Calendar private constructor(
         private fun createMonthlyCalendar(specs: CalendarSpecification): Calendar {
             val startYear = specs.startDate.year
             val startMonth = specs.startDate.monthNumber
+            val holidayManager = HolidayManager.forCountry(specs.holidayLanguage!! /* FIXME: optional value! */)
 
             val units = (0 until specs.numItems).toList()
                 .map { startMonth + it }
@@ -42,17 +43,30 @@ class Calendar private constructor(
                         baseType = BaseType.MONTH,
                         year = startYear + it / MONTHS_PER_YEAR,
                         number = month.number,
-                        name = month.name
+                        name = month.readableName()
                     )
                 }
 
             units.forEach { unit ->
                 val month = Month(unit.number)
+                val holidays = holidayManager.getHolidays(unit.year)
                 val daysInMonth = DateHelper.daysInMonth(year = unit.year, month = month.number)
 
                 unit.mutableDays += (1..daysInMonth).toList()
                     .map { LocalDate(year = unit.year, month = month, dayOfMonth = it) }
-                    .map { Day(date = it) }
+                    .map { date ->
+                        val holiday = holidays.firstOrNull { holiday -> holiday.local == date }
+                        val info = if (holiday != null && holiday.type == HolidayType.observance) { holiday.name } else { null }
+                        val holidayName = if (holiday != null && holiday.type != HolidayType.observance) { holiday.name } else { null }
+                        val day = Day(
+                            date = date,
+                            publicHoliday = holidayName != null,
+                            holidayName = holidayName,
+                            info = info
+                        )
+                        day
+                    }
+
             }
 
             return Calendar(units)
@@ -82,11 +96,13 @@ class Calendar private constructor(
     }
 
     class Day internal constructor(
-        val date: LocalDate
+        val date: LocalDate,
+        val publicHoliday: Boolean = false,
+        val holidayName: String? = null,
+        val info: String? = null
     ) {
         val display: String get() = date.dayOfMonth.toString()
         val dayOfWeek = date.dayOfWeek
         val weekend: Boolean = dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY
-        val publicHoliday: Boolean = dayOfWeek == DayOfWeek.SUNDAY
     }
 }

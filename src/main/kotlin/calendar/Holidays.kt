@@ -1,7 +1,16 @@
 package calendar
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.decodeFromDynamic
+import kotlin.js.Date
 
 @JsModule("date-holidays")
 @JsNonModule
@@ -14,25 +23,58 @@ private external class Holidays(
     //* @param {String} opts.timezone - set timezone
     //* @param {Array} opts.types - holiday types to consider
 ) {
-    fun getCountries(): dynamic
+    fun getCountries(language: String = definedExternally): dynamic
+    fun getHolidays(year: Int, language: String = definedExternally): dynamic
+    fun isHoliday(date: Date): Boolean
+    fun getLanguages(): dynamic
+    fun setLanguages(languages: String)
 }
 
-class Holiday {
+class Holiday(
+    val date: String,
+    val start: Date,
+    val end: Date,
+    val name: String,
+    var type: HolidayType
+) {
+    val local = Instant.fromEpochMilliseconds(start.getTime().toLong()).toLocalDateTime(TimeZone.currentSystemDefault()).date
+}
+
+enum class HolidayType {
+    public, bank, school, observance, optional
+}
+
+class HolidayManager private constructor(
+    private val holidays: Holidays
+) {
     companion object {
         private val holidays = Holidays()
         private val holidayCountries = holidays.getCountries()
 
-        init {
-            //console.log(holidayCountries)
-        }
-
         val countries: Map<String, String> = Json.decodeFromDynamic(holidayCountries)
         val countryCodes: Collection<String> = countries.keys
+
+        fun forCountry(code: String): HolidayManager {
+            return HolidayManager(Holidays(country = code))
+        }
     }
 
-
-
-    fun getCountries() = Json.decodeFromDynamic<Map<String, JSON>>(holidays.getCountries())
-
-
+    fun getHolidays(year: Int) : List<Holiday> {
+        val list = holidays.getHolidays(year = year)
+        val length: Int = list.length as Int
+        val resultList = mutableListOf<Holiday>()
+        for (index in 0 until length) {
+            val item = list[index]
+            val holiday = Holiday(
+                date = item.date as String,
+                start = item.start as Date,
+                end = item.end as Date,
+                name = item.name as String,
+                type = HolidayType.valueOf(item.type as String)
+            )
+            resultList += holiday
+        }
+        return resultList
+    }
 }
+
