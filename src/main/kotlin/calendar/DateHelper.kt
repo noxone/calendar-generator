@@ -1,6 +1,18 @@
 package calendar
 
-import kotlinx.datetime.*
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.minus
+import kotlinx.datetime.number
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 
 object DateHelper {
     val clock = Clock.System.now()
@@ -19,19 +31,15 @@ object DateHelper {
     val allMonthIndices: List<Int> = allMonths.map { it.number }
 
     fun daysInMonth(year: Int, month: Int): Int {
-        try {
-            val start = LocalDate(year, month, 1)
+        return try {
+            val start = LocalDate(year, month, dayOfMonth = 1)
             val end = start.plus(DatePeriod(months = 1))
-            return start.daysUntil(end)
+            start.daysUntil(end)
         } catch (e: Exception) {
             console.error(e)
-            return 16
+            16
         }
     }
-
-    fun weekday(year: Int, month: Int, day: Int): DayOfWeek =
-        LocalDate(year = year, month = Month(month), dayOfMonth = day)
-            .dayOfWeek
 }
 
 fun Month.readableName() = this.name.lowercase().replaceFirstChar { it.uppercase() }
