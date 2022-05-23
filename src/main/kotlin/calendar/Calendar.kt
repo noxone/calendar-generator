@@ -33,7 +33,7 @@ class Calendar private constructor(
         private fun createMonthlyCalendar(specs: CalendarSpecification): Calendar {
             val startYear = specs.startDate.year
             val startMonth = specs.startDate.monthNumber
-            val holidayManager = HolidayManager.forCountry(specs.holidayLanguage!! /* FIXME: optional value! */)
+            val holidayManager = specs.holidayLanguage?.let { HolidayManager.forCountry(it) }
 
             val units = (0 until specs.numItems).toList()
                 .map { startMonth + it }
@@ -47,9 +47,11 @@ class Calendar private constructor(
                     )
                 }
 
+            val holidayMap = mutableMapOf<Int, List<Holiday>>()
+
             units.forEach { unit ->
                 val month = Month(unit.number)
-                val holidays = holidayManager.getHolidays(unit.year)
+                val holidays = holidayMap.getOrPut(unit.year) { holidayManager?.getHolidays(unit.year) ?: emptyList() }
                 val daysInMonth = DateHelper.daysInMonth(year = unit.year, month = month.number)
 
                 unit.mutableDays += (1..daysInMonth).toList()
@@ -66,11 +68,8 @@ class Calendar private constructor(
                         )
                         day
                     }
-
             }
-
             return Calendar(units)
-
         }
     }
 

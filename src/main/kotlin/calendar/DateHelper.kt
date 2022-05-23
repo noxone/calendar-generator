@@ -19,10 +19,6 @@ object DateHelper {
 
     val currentDate: LocalDate
         get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-    val currentMonth: Int
-        get() = currentDate.monthNumber
-    val currentYear: Int
-        get() = currentDate.year
 
     fun getMonthName(number: Int): String = Month(number).readableName()
 
