@@ -57,7 +57,7 @@ class DateHelperTest {
     @Test
     fun testDaysInMonth2() = testDaysInMonth(year = 2023, monthNumber = 2, expectedDayCount = 28)
     @Test
-    fun testDaysInMonth3() = testDaysInMonth(year = 2024, monthNumber = 3, expectedDayCount = 29)
+    fun testDaysInMonth3() = testDaysInMonth(year = 2024, monthNumber = 2, expectedDayCount = 29)
     @Test
     fun testDaysInMonth4() = testDaysInMonth(year = 2025, monthNumber = 4, expectedDayCount = 30)
 }

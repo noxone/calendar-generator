@@ -39,16 +39,16 @@ val CalendarDisplay = FC<CalendarDisplayProps> { props ->
                     +props.calendarSpecs.title.translate()
                 }
             }
-        }
-
-        tbody {
             tr {
                 for (unit in calendar.units) {
-                    td {
+                    th {
                         +unit.name.translate()
                     }
                 }
             }
+        }
+
+        tbody {
             for (dayInMonth in 1..calendar.maxDaysInUnit) {
                 tr {
                     for (unit in calendar.units) {
@@ -70,7 +70,7 @@ val CalendarDisplay = FC<CalendarDisplayProps> { props ->
                                 +day.display
                                 day.holidayName?.let {
                                     small {
-                                        +it
+                                        +it.translate()
                                     }
                                 }
                                 if (day.dayOfWeek == DayOfWeek.MONDAY) {

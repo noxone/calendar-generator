@@ -1,6 +1,7 @@
 package org.olafneumann.calendargenerator.components
 
 import org.olafneumann.calendargenerator.browser.IdCounter
+import org.olafneumann.calendargenerator.i18n.translate
 import react.FC
 import react.Props
 import react.dom.aria.ariaDescribedBy
@@ -28,7 +29,7 @@ val TextInput = FC<TextInputProps> { props ->
             className = "input-group-text"
             htmlFor = idx
             id = labelIdx
-            +props.title
+            +props.title.translate()
         }
         input {
             id = idx

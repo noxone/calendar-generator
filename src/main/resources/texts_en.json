@@ -1,0 +1,20 @@
+{
+  "language": "en",
+  "entries": {
+    "(?i)january": "January",
+    "(?i)february": "February",
+    "(?i)march": "March",
+    "(?i)april": "April",
+    "(?i)may": "May",
+    "(?i)june": "June",
+    "(?i)july": "July",
+    "(?i)august": "August",
+    "(?i)september": "September",
+    "(?i)october": "October",
+    "(?i)november": "November",
+    "(?i)december": "December",
+    "Year": "Year",
+    "Title": "Title",
+    "Columns": "Columns"
+  }
+}

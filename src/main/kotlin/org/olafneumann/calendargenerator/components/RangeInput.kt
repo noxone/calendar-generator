@@ -1,6 +1,7 @@
 package org.olafneumann.calendargenerator.components
 
 import org.olafneumann.calendargenerator.browser.IdCounter
+import org.olafneumann.calendargenerator.i18n.translate
 import react.FC
 import react.Props
 import react.dom.html.InputType
@@ -21,9 +22,11 @@ val RangeInput = FC<RangeInputProps> { props ->
 
     div {
         label {
-            +"Number of columns"
+            +props.title.translate()
+            htmlFor = idx
         }
         input {
+            id = idx
             type = InputType.range
             value = props.value.toString()
             min = (props.min ?: 0).toDouble()
