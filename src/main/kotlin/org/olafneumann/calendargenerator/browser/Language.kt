@@ -1,13 +1,10 @@
 package org.olafneumann.calendargenerator.browser
-val preferredLanguage: String? = getPreferredLanguage()
 
-private fun getPreferredLanguage() : String? {
-    val preferredBrowserLanguage = js("navigator.language")
-    if (preferredBrowserLanguage is String) {
-        return (preferredBrowserLanguage as String)
-            .replace(Regex("^(\\w+-)?(\\w+)$"), "$2")
-            .uppercase()
-    } else {
-        return null
-    }
-}
+val navigatorLanguage: String? = js("navigator.language") as String?
+
+val browserLanguage: String = navigatorLanguage
+    ?.replace(Regex("^(\\w+)-?(\\w+)?$"), "$1") ?: "en"
+
+val userRegion: String? = navigatorLanguage
+    ?.replace(Regex("^(\\w+-)?(\\w+)$"), "$2")
+    ?.uppercase()

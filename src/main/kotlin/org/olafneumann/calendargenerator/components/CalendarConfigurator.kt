@@ -49,7 +49,7 @@ val CalendarConfiguration = FC<CalendarConfigurationProps> { props ->
     DropDownInput {
         title = "Holidays"
         items = HolidayManager.countries.entries.toList()
-        value = HolidayManager.countries.entries.firstOrNull { it.key == props.calendarSpecs.holidayLanguage }
+        value = HolidayManager.countries.entries.firstOrNull { it.key == props.calendarSpecs.holidayRegion }
         onValueChanged = { props.onHolidayLanguageChanged((it as Map.Entry<String, String>).key) }
         toString = { (it as Map.Entry<String, String>).value }
     }

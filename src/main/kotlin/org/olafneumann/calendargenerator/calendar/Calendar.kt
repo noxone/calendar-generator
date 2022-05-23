@@ -33,7 +33,7 @@ class Calendar private constructor(
         private fun createMonthlyCalendar(specs: CalendarSpecification): Calendar {
             val startYear = specs.startDate.year
             val startMonth = specs.startDate.monthNumber
-            val holidayManager = specs.holidayLanguage?.let { HolidayManager.forCountry(it) }
+            val holidayManager = specs.holidayRegion?.let { HolidayManager.forCountry(it) }
 
             val units = (0 until specs.numItems).toList()
                 .map { startMonth + it }

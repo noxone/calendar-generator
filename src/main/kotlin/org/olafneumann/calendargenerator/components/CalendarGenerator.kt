@@ -37,7 +37,7 @@ val CalendarGenerator = FC<Props> {
                 }
                 onHolidayLanguageChanged = {
                     console.log(it)
-                    calendarSpecs = calendarSpecs.copy(holidayLanguage = it)
+                    calendarSpecs = calendarSpecs.copy(holidayRegion = it)
                 }
             }
         }

@@ -7,6 +7,7 @@ import react.dom.aria.ariaDescribedBy
 import react.dom.html.InputType
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
+import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.span
 
 external interface TextInputProps : Props {
@@ -19,19 +20,22 @@ external interface TextInputProps : Props {
 
 val TextInput = FC<TextInputProps> { props ->
     val idx = IdCounter.nextId()
+    val labelIdx = "${idx}-label"
 
     div {
         className = "input-group"
-        span {
+        label {
             className = "input-group-text"
-            id = idx
+            htmlFor = idx
+            id = labelIdx
             +props.title
         }
         input {
+            id = idx
             className = "form-control"
             type = InputType.text
             props.placeholder?.let { placeholder = it }
-            ariaDescribedBy = idx
+            ariaDescribedBy = labelIdx
             value = props.value
             onChange = {
                 props.onValueChanged(it.target.value)
