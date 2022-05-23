@@ -12,8 +12,7 @@ object DateHelper {
     val currentYear: Int
         get() = currentDate.year
 
-    fun getMonthName(number: Int): String
-        = Month(number).readableName()
+    fun getMonthName(number: Int): String = Month(number).readableName()
 
     val allMonths: List<Month> = Month.values().asList()
     val allMonthNames: List<String> = allMonths.map { getMonthName(it.number) }
@@ -30,13 +29,39 @@ object DateHelper {
         }
     }
 
-    fun weekday(year: Int, month: Int, day: Int): DayOfWeek
-        = LocalDate(year = year, month = Month(month), dayOfMonth = day)
+    fun weekday(year: Int, month: Int, day: Int): DayOfWeek =
+        LocalDate(year = year, month = Month(month), dayOfMonth = day)
             .dayOfWeek
-
-
-    private fun Month.readableName() = this.name.lowercase().replaceFirstChar { it.uppercase() }
 }
 
+fun Month.readableName() = this.name.lowercase().replaceFirstChar { it.uppercase() }
+
+// https://en.wikipedia.org/wiki/ISO_week_date#Calculating_the_week_number_from_an_ordinal_date
 val LocalDate.weekOfYear: Int
-    get() = 0 // TODO: Implement week of year!
+    get() {
+        val week = (dayOfYear - dayOfWeek.isoDayNumber + 10) / 7
+        return if (week < 1) {
+            minus(1, DateTimeUnit.DAY).weeksInYear
+        } else if (week > weeksInYear) {
+            1
+        } else {
+            week
+        }
+    }
+
+// https://www.quora.com/What-year-will-have-53-weeks
+/* Those rules can be manipulated to find easier expressions for when a (week) year has 53 weeks. I like the following:
+ * If Dec 28 is in a different week than Dec 27 in a common year or Dec 26 in a leap year, the year has 53 weeks.
+ * Alternatively, if Dec 28 is a Monday, or in a leap year either Monday or Tuesday, the (week) year has 53 weeks. */
+val LocalDate.weeksInYear: Int
+    get() {
+        val dayOfWeek = LocalDate(year = year, month = Month.DECEMBER, dayOfMonth = 28).dayOfWeek
+        return if (dayOfWeek == DayOfWeek.MONDAY || (isLeapYear && dayOfWeek == DayOfWeek.TUESDAY)) {
+            53
+        } else {
+            52
+        }
+    }
+
+val LocalDate.isLeapYear: Boolean
+    get() = (year % 400 == 0) || (year % 4 == 0) && (year % 100 != 0)
