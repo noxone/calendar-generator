@@ -1,4 +1,4 @@
-package calendar
+package org.olafneumann.calendargenerator.calendar
 
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate

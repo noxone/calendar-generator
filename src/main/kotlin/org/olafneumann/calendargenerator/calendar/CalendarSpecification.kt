@@ -1,9 +1,9 @@
-package calendar
+package org.olafneumann.calendargenerator.calendar
 
 import kotlinx.datetime.LocalDate
 import react.State
-import calendar.Calendar.BaseType
-import preferredLanguage
+import org.olafneumann.calendargenerator.calendar.Calendar.BaseType
+import org.olafneumann.calendargenerator.browser.preferredLanguage
 
 data class CalendarSpecification(
     var title: String = "Calendar",

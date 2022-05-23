@@ -1,6 +1,10 @@
-import calendar.HolidayManager
+package org.olafneumann.calendargenerator
+
+import org.olafneumann.calendargenerator.calendar.HolidayManager
 import kotlinx.browser.document
 import kotlinx.datetime.Clock
+import org.olafneumann.calendargenerator.browser.preferredLanguage
+import org.olafneumann.calendargenerator.components.CalendarGenerator
 import react.create
 import react.dom.render
 

@@ -1,5 +1,6 @@
-package components
+package org.olafneumann.calendargenerator.components
 
+import org.olafneumann.calendargenerator.browser.IdCounter
 import react.FC
 import react.Props
 import react.dom.html.InputType

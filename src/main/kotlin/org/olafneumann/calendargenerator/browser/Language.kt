@@ -1,4 +1,4 @@
-
+package org.olafneumann.calendargenerator.browser
 val preferredLanguage: String? = getPreferredLanguage()
 
 private fun getPreferredLanguage() : String? {

@@ -1,4 +1,6 @@
-import calendar.CalendarSpecification
+package org.olafneumann.calendargenerator.components
+
+import org.olafneumann.calendargenerator.calendar.CalendarSpecification
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 import react.FC

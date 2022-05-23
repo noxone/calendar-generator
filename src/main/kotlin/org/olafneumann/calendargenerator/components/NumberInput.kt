@@ -1,25 +1,23 @@
-package components
+package org.olafneumann.calendargenerator.components
 
+import org.olafneumann.calendargenerator.browser.IdCounter
 import react.FC
 import react.Props
 import react.dom.aria.ariaDescribedBy
 import react.dom.html.InputType
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.h2
-import react.dom.html.ReactHTML.hr
 import react.dom.html.ReactHTML.input
-import react.dom.html.ReactHTML.label
 import react.dom.html.ReactHTML.span
 
-external interface TextInputProps : Props {
+external interface NumberInputProps : Props {
     var title: String
     var placeholder: String?
-    var value: String
-    var onValueChanged: (String) -> Unit
+    var value: Int
+    var onValueChanged: (Int) -> Unit
 }
 
 
-val TextInput = FC<TextInputProps> { props ->
+val NumberInput = FC<NumberInputProps> { props ->
     val idx = IdCounter.nextId()
 
     div {
@@ -31,12 +29,12 @@ val TextInput = FC<TextInputProps> { props ->
         }
         input {
             className = "form-control"
-            type = InputType.text
+            type = InputType.number
             props.placeholder?.let { placeholder = it }
             ariaDescribedBy = idx
-            value = props.value
+            value = props.value.toString()
             onChange = {
-                props.onValueChanged(it.target.value)
+                props.onValueChanged(it.target.value.toInt())
             }
         }
     }

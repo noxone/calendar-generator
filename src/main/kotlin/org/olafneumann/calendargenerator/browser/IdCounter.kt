@@ -1,4 +1,4 @@
-package components
+package org.olafneumann.calendargenerator.browser
 
 object IdCounter {
     private var count = 0

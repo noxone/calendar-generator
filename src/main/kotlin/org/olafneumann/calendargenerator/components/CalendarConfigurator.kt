@@ -1,10 +1,8 @@
-import calendar.CalendarSpecification
-import calendar.DateHelper
-import calendar.HolidayManager
-import components.DropDownInput
-import components.NumberInput
-import components.RangeInput
-import components.TextInput
+package org.olafneumann.calendargenerator.components
+
+import org.olafneumann.calendargenerator.calendar.CalendarSpecification
+import org.olafneumann.calendargenerator.calendar.DateHelper
+import org.olafneumann.calendargenerator.calendar.HolidayManager
 import kotlinx.datetime.Month
 import react.FC
 import react.Props

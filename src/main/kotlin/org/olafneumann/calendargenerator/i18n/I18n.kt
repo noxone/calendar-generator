@@ -1,4 +1,4 @@
-package i18n
+package org.olafneumann.calendargenerator.i18n
 
 object I18n {
     private val map: Map<Regex, String>
@@ -9,7 +9,7 @@ object I18n {
         map[Regex("May")] = "Mai"
         map[Regex("Calendar")] = "XKalender"
         map[Regex("Calendar (\\d+)")] = "$1 Kalender"
-        this.map = map
+        I18n.map = map
     }
 
     fun translate(input: String): String {

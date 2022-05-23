@@ -1,6 +1,6 @@
-package components
+package org.olafneumann.calendargenerator.components
 
-import i18n.translate
+import org.olafneumann.calendargenerator.i18n.translate
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.option

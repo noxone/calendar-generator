@@ -1,10 +1,12 @@
-import calendar.Calendar
-import calendar.CalendarSpecification
-import calendar.weekOfYear
+package org.olafneumann.calendargenerator.components
+
+import org.olafneumann.calendargenerator.calendar.Calendar
+import org.olafneumann.calendargenerator.calendar.CalendarSpecification
+import org.olafneumann.calendargenerator.calendar.weekOfYear
 import csstype.FontWeight
 import csstype.px
 import csstype.rgb
-import i18n.translate
+import org.olafneumann.calendargenerator.i18n.translate
 import kotlinx.datetime.DayOfWeek
 import react.FC
 import react.Props
