@@ -18,7 +18,7 @@ val CalendarGenerator = FC<Props> {
     div {
         className = "row"
         div {
-            className = "col-3"
+            // className = "col-3"
             CalendarConfiguration {
                 this.calendarSpecs = calendarSpecs
                 onTitleChanged = { calendarSpecs = calendarSpecs.copy(title = it) }
@@ -42,7 +42,7 @@ val CalendarGenerator = FC<Props> {
             }
         }
         div {
-            className = "col-9"
+            // className = "col-9"
             CalendarDisplay {
                 this.calendarSpecs = calendarSpecs
             }

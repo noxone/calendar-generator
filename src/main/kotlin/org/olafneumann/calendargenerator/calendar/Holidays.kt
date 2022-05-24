@@ -1,6 +1,5 @@
 package org.olafneumann.calendargenerator.calendar
 
-import date_holidays.HolidaysTypes.Options
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -29,11 +28,11 @@ private open external class Holidays(
 ) {
     constructor()
     constructor(country: String)
-    constructor(country: String = definedExternally, state: String = definedExternally, region: String = definedExternally, opts: Options = definedExternally)
-    open fun init(country: String = definedExternally, state: String = definedExternally, region: String = definedExternally, opts: Options = definedExternally)
+    constructor(country: String = definedExternally, state: String = definedExternally, region: String = definedExternally/*, opts: Options = definedExternally*/)
+    open fun init(country: String = definedExternally, state: String = definedExternally, region: String = definedExternally/*, opts: Options = definedExternally*/)
     open fun getCountries(language: String = definedExternally): `T$0`
-    open fun getStates(country: String, language: String = definedExternally): date_holidays.HolidaysTypes.`T$0`
-    open fun getRegions(country: String, state: String, language: String = definedExternally): date_holidays.HolidaysTypes.`T$0`
+    open fun getStates(country: String, language: String = definedExternally): `T$0`
+    open fun getRegions(country: String, state: String, language: String = definedExternally): `T$0`
     open fun getHolidays(year: Int = definedExternally, language: String = definedExternally): Array<Holiday>
     fun isHoliday(date: Date): Boolean
     fun getLanguages(): dynamic
