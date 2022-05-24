@@ -6,9 +6,9 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.number
 
 class Calendar private constructor(
-    val units: List<Unit>
+    val timeUnits: List<TimeUnit>
 ) {
-    val maxDaysInUnit = units.maxOf { it.days.size }
+    val maxDaysInUnit = timeUnits.maxOf { it.days.size }
 
     companion object {
         private const val MONTHS_PER_YEAR = 12
@@ -35,13 +35,13 @@ class Calendar private constructor(
             val startMonth = specs.startDate.monthNumber
             val holidayManager = specs.holidayRegion?.let { HolidayManager.forCountry(it) }
 
-            val units = (0 until specs.numItems).toList()
+            val timeUnits = (0 until specs.numItems).toList()
                 .map { startMonth + it }
-                .map {
-                    val month = Month(it.toMonth())
-                    Unit(
+                .map { monthNumber ->
+                    val month = Month(monthNumber.toMonth())
+                    TimeUnit(
                         baseType = BaseType.MONTH,
-                        year = startYear + it / MONTHS_PER_YEAR,
+                        year = startYear + (monthNumber - 1) / MONTHS_PER_YEAR,
                         number = month.number,
                         name = month.readableName()
                     )
@@ -49,18 +49,19 @@ class Calendar private constructor(
 
             val holidayMap = mutableMapOf<Int, List<Holiday>>()
 
-            units.forEach { unit ->
-                val month = Month(unit.number)
-                val holidays = holidayMap.getOrPut(unit.year) { holidayManager?.getHolidays(unit.year) ?: emptyList() }
-                val daysInMonth = DateHelper.daysInMonth(year = unit.year, month = month.number)
+            timeUnits.forEach { timeUnit ->
+                val month = Month(timeUnit.number)
+                val holidays = holidayMap.getOrPut(timeUnit.year) { holidayManager?.getHolidays(timeUnit.year) ?: emptyList() }
+                val daysInMonth = DateHelper.daysInMonth(year = timeUnit.year, month = month.number)
 
-                unit.mutableDays += (1..daysInMonth).toList()
-                    .map { LocalDate(year = unit.year, month = month, dayOfMonth = it) }
+                timeUnit.mutableDays += (1..daysInMonth).toList()
+                    .map { LocalDate(year = timeUnit.year, month = month, dayOfMonth = it) }
                     .map { date ->
                         val holiday = holidays.firstOrNull { holiday -> holiday.local == date }
                         val info = if (holiday != null && holiday.holidayType == HolidayType.observance) { holiday.name } else { null }
                         val holidayName = if (holiday != null && holiday.holidayType != HolidayType.observance) { holiday.name } else { null }
                         val day = Day(
+                            parent = timeUnit,
                             date = date,
                             publicHoliday = holidayName != null,
                             holidayName = holidayName,
@@ -69,7 +70,7 @@ class Calendar private constructor(
                         day
                     }
             }
-            return Calendar(units)
+            return Calendar(timeUnits)
         }
     }
 
@@ -82,7 +83,7 @@ class Calendar private constructor(
     }
 
 
-    class Unit internal constructor(
+    class TimeUnit internal constructor(
         val baseType: BaseType,
         val year: Int,
         val number: Int,
@@ -95,6 +96,7 @@ class Calendar private constructor(
     }
 
     class Day internal constructor(
+        val parent: TimeUnit,
         val date: LocalDate,
         val publicHoliday: Boolean = false,
         val holidayName: String? = null,
@@ -103,5 +105,9 @@ class Calendar private constructor(
         val display: String get() = date.dayOfMonth.toString()
         val dayOfWeek = date.dayOfWeek
         val weekend: Boolean = dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY
+
+        val shouldShowCalendarWeekNumber: Boolean =
+            dayOfWeek == DayOfWeek.MONDAY /*&& this != parent.days.last()
+                    || dayOfWeek == DayOfWeek.TUESDAY && this == parent.days.first()*/
     }
 }
