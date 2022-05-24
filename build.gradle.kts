@@ -33,11 +33,14 @@ dependencies {
 }
 
 kotlin {
-    js(LEGACY) {
+    js(IR) {
         binaries.executable()
         browser {
             commonWebpackConfig {
                 cssSupport.enabled = true
+            }
+            webpackTask {
+                outputFileName = "calender-generator.js"
             }
         }
     }

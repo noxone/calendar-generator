@@ -58,8 +58,8 @@ class Calendar private constructor(
                     .map { LocalDate(year = unit.year, month = month, dayOfMonth = it) }
                     .map { date ->
                         val holiday = holidays.firstOrNull { holiday -> holiday.local == date }
-                        val info = if (holiday != null && holiday.type == HolidayType.observance) { holiday.name } else { null }
-                        val holidayName = if (holiday != null && holiday.type != HolidayType.observance) { holiday.name } else { null }
+                        val info = if (holiday != null && holiday.holidayType == HolidayType.observance) { holiday.name } else { null }
+                        val holidayName = if (holiday != null && holiday.holidayType != HolidayType.observance) { holiday.name } else { null }
                         val day = Day(
                             date = date,
                             publicHoliday = holidayName != null,

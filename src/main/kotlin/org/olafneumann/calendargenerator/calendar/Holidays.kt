@@ -1,6 +1,7 @@
 package org.olafneumann.calendargenerator.calendar
 
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
@@ -19,25 +20,26 @@ private external class Holidays(
     //* @param {Array} opts.types - holiday types to consider
 ) {
     fun getCountries(language: String = definedExternally): dynamic
-    fun getHolidays(year: Int, language: String = definedExternally): dynamic
+    fun getHolidays(year: Int, language: String = definedExternally): Array<Holiday>
     fun isHoliday(date: Date): Boolean
     fun getLanguages(): dynamic
     fun setLanguages(languages: String)
 }
 
-class Holiday(
-    val date: String,
-    val start: Date,
-    val end: Date,
-    val name: String,
-    var type: HolidayType
-) {
-    val local = Instant.fromEpochMilliseconds(start.getTime().toLong()).toLocalDateTime(TimeZone.currentSystemDefault()).date
+external class Holiday {
+    val date: String
+    val start: Date
+    val end: Date
+    val name: String
+    var type: String
 }
 
 enum class HolidayType {
     public, bank, school, observance, optional
 }
+
+val Holiday.local: LocalDate get() = Instant.fromEpochMilliseconds(this.start.getTime().toLong()).toLocalDateTime(TimeZone.currentSystemDefault()).date
+val Holiday.holidayType : HolidayType get() = HolidayType.valueOf(type)
 
 class HolidayManager private constructor(
     private val holidays: Holidays
@@ -54,22 +56,7 @@ class HolidayManager private constructor(
         }
     }
 
-    fun getHolidays(year: Int) : List<Holiday> {
-        val list = holidays.getHolidays(year = year)
-        val length: Int = list.length as Int
-        val resultList = mutableListOf<Holiday>()
-        for (index in 0 until length) {
-            val item = list[index]
-            val holiday = Holiday(
-                date = item.date as String,
-                start = item.start as Date,
-                end = item.end as Date,
-                name = item.name as String,
-                type = HolidayType.valueOf(item.type as String)
-            )
-            resultList += holiday
-        }
-        return resultList
-    }
+    fun getHolidays(year: Int) : List<Holiday>
+        = holidays.getHolidays(year).asList()
 }
 
