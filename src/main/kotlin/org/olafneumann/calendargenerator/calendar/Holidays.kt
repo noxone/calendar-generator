@@ -1,5 +1,6 @@
 package org.olafneumann.calendargenerator.calendar
 
+import date_holidays.HolidaysTypes.Options
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -8,9 +9,16 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromDynamic
 import kotlin.js.Date
 
+private external interface `T$0` {
+    @nativeGetter
+    operator fun get(key: String): String?
+    @nativeSetter
+    operator fun set(key: String, value: String)
+}
+
 @JsModule("date-holidays")
 @JsNonModule
-private external class Holidays(
+private open external class Holidays(
     country: String = definedExternally, //@param {String|Object} country - if object use `{ country: {String}, state: {String}, region: {String} }`
     state: String = definedExternally, //* @param {String} [state] - specifies state
     region: String = definedExternally, //* @param {String} [region] - specifies region
@@ -19,11 +27,18 @@ private external class Holidays(
     //* @param {String} opts.timezone - set timezone
     //* @param {Array} opts.types - holiday types to consider
 ) {
-    fun getCountries(language: String = definedExternally): dynamic
-    fun getHolidays(year: Int, language: String = definedExternally): Array<Holiday>
+    constructor()
+    constructor(country: String)
+    constructor(country: String = definedExternally, state: String = definedExternally, region: String = definedExternally, opts: Options = definedExternally)
+    open fun init(country: String = definedExternally, state: String = definedExternally, region: String = definedExternally, opts: Options = definedExternally)
+    open fun getCountries(language: String = definedExternally): `T$0`
+    open fun getStates(country: String, language: String = definedExternally): date_holidays.HolidaysTypes.`T$0`
+    open fun getRegions(country: String, state: String, language: String = definedExternally): date_holidays.HolidaysTypes.`T$0`
+    open fun getHolidays(year: Int = definedExternally, language: String = definedExternally): Array<Holiday>
     fun isHoliday(date: Date): Boolean
     fun getLanguages(): dynamic
-    fun setLanguages(languages: String)
+    open fun setLanguages(language: String): Array<String>
+    open fun setTimezone(timezone: String)
 }
 
 external class Holiday {
